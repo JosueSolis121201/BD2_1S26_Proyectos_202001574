@@ -23,7 +23,9 @@ Se identificaron tres consultas principales y se diseno una tabla para cada una:
 
 #### A. Tabla: disponibilidad_espacio_fecha
 
-Consulta que resuelve: ¿Cuales son las reservas y disponibilidad de un espacio especifico en una fecha exacta?
+**Descripción de consulta:** ¿Cuales son las reservas y disponibilidad de un espacio especifico en una fecha exacta?
+
+Esta consulta resuelve la necesidad de ver todas las reservas de un espacio en un día específico, ordenadas cronológicamente por hora. Permite identificar rápidamente qué horas están disponibles para reservar en un espacio determinado.
 
 - Partition Key: `(espacio_nombre, fecha)`
 - Justificacion: se eligio una clave de particion compuesta para garantizar que todas las reservas de un mismo espacio en un dia especifico se almacenen en el mismo nodo fisico, permitiendo una lectura instantanea.
@@ -32,7 +34,9 @@ Consulta que resuelve: ¿Cuales son las reservas y disponibilidad de un espacio 
 
 #### B. Tabla: historial_usuario
 
-Consulta que resuelve: ¿Cual es el historial de reservas de un usuario especifico?
+**Descripción de consulta:** ¿Cual es el historial de reservas de un usuario especifico?
+
+Esta consulta permite visualizar todas las reservas realizadas por un usuario específico, ordenadas de las más recientes a las antiguas. Es fundamental para que los usuarios vean su historial de reservas y para análisis del comportamiento de cada usuario.
 
 - Partition Key: `email_usuario`
 - Justificacion: agrupa toda la actividad de un cliente en una sola particion.
@@ -41,7 +45,9 @@ Consulta que resuelve: ¿Cual es el historial de reservas de un usuario especifi
 
 #### C. Tabla: ocupacion_espacio_mes
 
-Consulta que resuelve: ¿Cual es la ocupacion de un espacio en un rango de fechas determinado?
+**Descripción de consulta:** ¿Cual es la ocupacion de un espacio en un rango de fechas determinado?
+
+Esta consulta permite evaluar la ocupación o disponibilidad de un espacio durante un período específico (por mes). Proporciona informacion para análisis de demanda, predicciones de disponibilidad futura y reportes de utilización de espacios.
 
 - Partition Key: `(espacio_nombre, mes_anio)`
 - Justificacion: al incluir el mes y anio (ej. `2026-05`) en la clave de particion, se limita la busqueda de rangos de fechas a una particion manejable (un mes), evitando escanear todo el cluster.

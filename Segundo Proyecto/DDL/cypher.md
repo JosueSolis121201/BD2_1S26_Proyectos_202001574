@@ -123,14 +123,14 @@ MERGE (u)-[:LE_GUSTA {nivelInteres: toInteger(rand()*5)+1}]->(g);
 ```Bash
 # 1. Obtener todas las películas calificadas por un usuario específico con puntuación mayor a 4
 MATCH (u:Usuario {email: "user10@ejemplo.com"})-[c:CALIFICÓ]->(p:Pelicula)
-WHERE c.puntuacion > 4
+WHERE c.puntuacion > 0
 RETURN p.titulo, c.puntuacion, c.comentario
 
 # 2. Encontrar las películas que vieron los amigos de un usuario pero que el usuario aún no ha visto
-MATCH (u:Usuario {email: "user15@ejemplo.com"})-[:ES_AMIGO_DE]-(amigo:Usuario)
+MATCH (u:Usuario {email: "user10@ejemplo.com"})-[:ES_AMIGO_DE]-(amigo:Usuario)
 MATCH (amigo)-[:VIO]->(p:Pelicula)
 WHERE NOT (u)-[:VIO]->(p)
-RETURN DISTINCT p.titulo AS PeliculasRecomendadas
+RETURN DISTINCT p.titulo AS PeliculasRecomendadas, p.anoLanzamiento as Anio, amigo.nombre as NombreAmigo, u.nombre as Nombre
 
 # 3. Obtener el promedio de calificaciones de una película
 MATCH (u:Usuario)-[c:CALIFICÓ]->(p:Pelicula {titulo: "Pelicula 45"})
@@ -152,4 +152,18 @@ MATCH (u:Usuario)-[:VIO]->(p:Pelicula)-[:PERTENECE_A]->(g:Genero {nombreGenero: 
 RETURN p.titulo AS Pelicula, count(u) AS TotalVisualizaciones
 ORDER BY TotalVisualizaciones DESC
 LIMIT 5
+
+
+## Listar nodos por tipo
+
+MATCH (n)
+RETURN labels(n)[0] AS TipoDeNodo, count(n) AS Cantidad
+ORDER BY Cantidad DESC
+```
+
+
+##### Buscar actor
+```bash
+MATCH (a:Actor {nombre: "nuevo nombre"})
+RETURN a
 ```

@@ -9,7 +9,7 @@ Este manual guía al usuario en la instalación, configuración y uso del sistem
 3. Establecer una contraseña de al menos 8 caracteres.
 4. Iniciar la base de datos haciendo clic en el botón "Start".
 
-![alt text](<Segundo Proyecto/img/running.png>)
+![alt text](img/running.png)
 
 2. CARGA MASIVA DE DATOS CON LOAD CSV
 -----------------------------------------------------------------------------
@@ -18,7 +18,7 @@ Para cargar los datos iniciales, siga estos pasos:
 2. Copie los archivos CSV (usuarios.csv, peliculas.csv, etc.) dentro de esta carpeta.
 3. Abra la herramienta "Query" en Neo4j y ejecute los comandos de carga proporcionados.
 
-![alt text](<Segundo Proyecto/img/imports.png>)
+![alt text](img/imports.png)
 
 3. EJECUCIÓN DE CONSULTAS Y RECOMENDACIONES
 -----------------------------------------------------------------------------
@@ -27,7 +27,7 @@ Para interactuar con el sistema, utilice la pestaña "Query" e introduzca comand
 3.1 Ejemplo Práctico: Recomendación Social
 Para ver qué están viendo sus amigos, ejecute la consulta de "Películas vistas por amigos". El sistema devolverá un listado de títulos recomendados.
 
-![alt text](<Segundo Proyecto/img/tabla usuarios.png>)
+![alt text](img/tabla%20usuarios.png)
 
 
 ## 1. Obtener todas las películas calificadas por un usuario específico con puntuación mayor a 4
@@ -41,7 +41,7 @@ WHERE c.puntuacion > 4
 RETURN p.titulo, c.puntuacion, c.comentario
 ```
 
-![alt text](<Segundo Proyecto/img/1img.png>)
+![alt text](img/1img.png)
 
 ## 2. Encontrar las películas que vieron los amigos de un usuario pero que el usuario aún no ha visto
 
@@ -54,7 +54,7 @@ MATCH (amigo)-[:VIO]->(p:Pelicula)
 WHERE NOT (u)-[:VIO]->(p)
 RETURN DISTINCT p.titulo AS PeliculasRecomendadas
 ```
-![alt text](<Segundo Proyecto/img/2img.png>)
+![alt text](img/2img.png)
 
 ## 3. Obtener el promedio de calificaciones de una película
 
@@ -64,7 +64,7 @@ RETURN DISTINCT p.titulo AS PeliculasRecomendadas
 MATCH (u:Usuario)-[c:CALIFICÓ]->(p:Pelicula {titulo: "Pelicula 45"})
 RETURN p.titulo, avg(c.puntuacion) AS PromedioCalificacion
 ```
-![alt text](<Segundo Proyecto/img/3img.png>)
+![alt text](img/3img.png)
 
 ## 4. Encontrar los géneros favoritos de un usuario basándose en sus calificaciones
 
@@ -76,7 +76,7 @@ RETURN g.nombreGenero AS Genero, avg(c.puntuacion) AS PuntuacionPromedio, count(
 ORDER BY PuntuacionPromedio DESC, PeliculasCalificadas DESC
 LIMIT 3
 ```
-![alt text](<Segundo Proyecto/img/4img.png>)
+![alt text](img/4img.png)
 
 ## 5. Encontrar la ruta más corta de amistad entre dos usuarios
 
@@ -86,7 +86,7 @@ LIMIT 3
 MATCH ruta = shortestPath((u1:Usuario {email: "user10@ejemplo.com"})-[:ES_AMIGO_DE*]-(u2:Usuario {email: "user400@ejemplo.com"}))
 RETURN ruta
 ```
-![alt text](<Segundo Proyecto/img/5img.png>)
+![alt text](img/5img.png)
 
 ## 6. Listar las películas más populares (con más visualizaciones) de un género específico
 
@@ -99,7 +99,7 @@ ORDER BY TotalVisualizaciones DESC
 LIMIT 5
 ```
 
-![alt text](<Segundo Proyecto/img/6img.png>)
+![alt text](img/6img.png)
 
 ## 7. Calcular rutas más cortas entre usuarios
 
@@ -112,7 +112,7 @@ MATCH ruta = shortestPath(
 RETURN u1.nombre AS UsuarioOrigen, u2.nombre AS UsuarioDestino, length(ruta) AS GradosDeSeparacion
 ```
 
-![alt text](<Segundo Proyecto/img/7img.png>)
+![alt text](img/7img.png)
 
 ## 8. Identificar películas altamente conectadas (con más actores y directores reconocidos)
 
@@ -130,10 +130,11 @@ ORDER BY ConexionesTotales DESC
 LIMIT 10
 ```
 
+![alt text](img/8img.png)
+
 4. INTERPRETACIÓN DE RESULTADOS
 -----------------------------------------------------------------------------
-* Grados de Separación: Un resultado de 1 indica amigos directos; 2 indica un amigo en común.
-* Popularidad por Género: Las películas con más relaciones "VIO" aparecen al principio de la lista.
+En todas las consultas, los primeros resultados suelen representar mayor relevancia según el criterio aplicado (mejor calificación, mayor número de visualizaciones, mayor cercanía social o mayor conectividad). Para una lectura correcta, considere siempre el contexto del usuario analizado, la cantidad de datos disponibles y el tipo de métrica devuelta por cada consulta.
 
 
 5. RESOLUCIÓN DE PROBLEMAS COMUNES
